@@ -50,7 +50,7 @@ async def main():
 
         addresses = await session.execute(select(Address).join(User))
         for el in addresses.scalars():
-            print(el.id, el.email, el.user_id)
+            print(el.id, el.email, el.user_id, el.user.fullname)
 
 if __name__ == '__main__':
     asyncio.run(main())
