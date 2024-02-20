@@ -35,11 +35,12 @@ async def init():
 async def main():
     await init()
     async with DBSession() as session:
-        n_user = User(fullname="Jack Jones")
-        session.add(n_user)
-        n_address = Address(email="jones@email.com", user=n_user)
-        session.add(n_address)
-        await session.commit()
+        async with session.begin():
+            n_user = User(fullname="Jack Jones")
+            session.add(n_user)
+            n_address = Address(email="jones@email.com", user=n_user)
+            session.add(n_address)
+            # await session.commit()
 
         users = await session.execute(select(User))
         # for user in users.scalars():
