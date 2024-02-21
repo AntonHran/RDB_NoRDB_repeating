@@ -48,7 +48,30 @@ if __name__ == '__main__':
     for row in session.execute(statement):
         print(row)
 
-    statement = select(Address.id, Address.email, User.fullname).join(Address.user)
-    for row in session.execute(statement):
+    statement_addr = select(Address.id, Address.email, User.fullname).join(Address.user)
+    print(session.execute(statement_addr))
+    print(session.execute(statement_addr).scalar())
+    print(session.execute(statement_addr).scalars())
+
+    for row in session.execute(statement_addr):
         print(row)
+
+    columns = ["id", "fullname"]
+    result = [dict(zip(columns, (row.id, row.fullname))) for row in session.execute(statement)]
+    print(result)
+
+    statement = select(User).where(User.fullname == "James Smith")
+    result = session.execute(statement).scalar_one_or_none()
+    if result:
+        print(result.fullname)
+
+    statement = select(User).where(User.fullname.like("Jack%"))
+    result = session.execute(statement).scalars()
+    for row in result:
+        print(row.fullname)
+
+    statement = select(User).where(User.fullname.like("Jack%")).where(User.id == 3)
+    result = session.execute(statement).scalars()
+    for row in result:
+        print(row.fullname)
 
