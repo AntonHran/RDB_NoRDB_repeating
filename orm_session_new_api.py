@@ -1,4 +1,4 @@
-from sqlalchemy import Integer, String, ForeignKey, create_engine
+from sqlalchemy import Integer, String, ForeignKey, create_engine, select
 from sqlalchemy.orm import sessionmaker, relationship, declarative_base, Mapped, mapped_column
 
 
@@ -24,3 +24,31 @@ class Address(Base):
 
 
 Base.metadata.create_all(engine)
+
+if __name__ == '__main__':
+    n_user = User(fullname="Jack Jones")
+    session.add(n_user)
+    n_address = Address(email="jones@email.com", user=n_user)
+    session.add(n_address)
+    session.commit()
+
+    n_user = User(fullname="James Smith")
+    session.add(n_user)
+    n_address = Address(email="smith@email.com", user=n_user)
+    session.add(n_address)
+    session.commit()
+
+    n_user = User(fullname="Jack Keating")
+    session.add(n_user)
+    n_address = Address(email="keating@email.com", user=n_user)
+    session.add(n_address)
+    session.commit()
+
+    statement = select(User.id, User.fullname)
+    for row in session.execute(statement):
+        print(row)
+
+    statement = select(Address.id, Address.email, User.fullname).join(Address.user)
+    for row in session.execute(statement):
+        print(row)
+
