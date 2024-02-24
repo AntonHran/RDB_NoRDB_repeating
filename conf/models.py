@@ -1,5 +1,6 @@
 from sqlalchemy import Column, Integer, String, ForeignKey, Date
 from sqlalchemy.orm import relationship, declarative_base
+from sqlalchemy.ext.hybrid import hybrid_property
 
 
 Base = declarative_base()
@@ -18,6 +19,10 @@ class Teacher(Base):
                             secondary="teachers_to_students",  # name of table m2m
                             back_populates="teachers")  # name of table to reference for students
 
+    @hybrid_property
+    def fullname(self):
+        return self.first_name + " " + self.last_name
+
 
 class Student(Base):
     __tablename__ = "students"
@@ -30,6 +35,10 @@ class Student(Base):
     teachers = relationship("Teacher",
                             secondary="teachers_to_students",
                             back_populates="students")
+
+    @hybrid_property
+    def fullname(self):
+        return self.first_name + "" + self.last_name
 
 
 class TeacherStudent(Base):
