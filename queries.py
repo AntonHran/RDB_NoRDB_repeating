@@ -1,4 +1,4 @@
-from sqlalchemy.orm import joinedload, subqueryload
+from sqlalchemy.orm import joinedload, subqueryload, outerjoin
 
 from conf.db_connection import session
 from conf.models import Teacher, Student, TeacherStudent
@@ -22,8 +22,8 @@ def get_students():
 
 
 def get_teachers():
-    # students = session.query(Student).options(joinedload(Student.teachers)).all()
-    teachers = session.query(Teacher).options(subqueryload(Teacher.students)).all()
+    teachers = session.query(Teacher).outerjoin(Teacher.students).all()
+    # teachers = session.query(Teacher).options(joinedload(Teacher.students, innerjoin=True)).all()
     for t in teachers:
         columns = ["id", "fullname", "students"]
         result = [dict(zip(columns, (t.id, t.fullname, [(s.id, s.fullname) for s in t.students])))]
@@ -35,4 +35,3 @@ if __name__ == "__main__":
     get_students()
     print()
     get_teachers()
-
