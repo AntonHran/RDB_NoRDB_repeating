@@ -23,13 +23,16 @@ def get_students():
 
 def get_teachers():
     # students = session.query(Student).options(joinedload(Student.teachers)).all()
-    students = session.query(Student).options(subqueryload(Student.teachers)).limit(5).all()
-    for s in students:
-        columns = ["id", "fullname", "teachers"]
-        result = [dict(zip(columns, (s.id, s.fullname, [(t.id, t.fullname) for t in s.teachers])))]
+    teachers = session.query(Teacher).options(subqueryload(Teacher.students)).all()
+    for t in teachers:
+        columns = ["id", "fullname", "students"]
+        result = [dict(zip(columns, (t.id, t.fullname, [(s.id, s.fullname) for s in t.students])))]
         print(result)
 
 
 if __name__ == "__main__":
     # get_student_join()
     get_students()
+    print()
+    get_teachers()
+
