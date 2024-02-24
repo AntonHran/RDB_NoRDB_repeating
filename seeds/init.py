@@ -42,7 +42,7 @@ def insert_rel_m2m():
     students = session.query(Student).all()
     teachers = session.query(Teacher).all()
     for student in students:
-        rel = TeacherStudent(teacher_id=random.choice(teachers), student_id=student)
+        rel = TeacherStudent(teacher_id=random.choice(teachers).id, student_id=student.id)
         session.add(rel)
 
 
@@ -50,9 +50,23 @@ def insert_rel_m2m_():
     for i in range(STUDENTS_NUMBER):
         teacher_student = TeacherStudent(
             teacher_id=random.randint(1, TEACHERS_NUMBER),
-            student_id=i
+            student_id=i + 1
         )
         session.add(teacher_student)
 
 
 def main():
+    try:
+        insert_teachers()
+        insert_students()
+        insert_rel_m2m()
+        session.commit()
+    except SQLAlchemyError as error:
+        print(error)
+        session.rollback()
+    finally:
+        session.close()
+
+
+if __name__ == '__main__':
+    main()
