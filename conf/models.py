@@ -41,6 +41,21 @@ class Student(Base):
         return self.first_name + " " + self.last_name
 
 
+class Contact(Base):
+    __tablename__ = "contacts"
+    id = Column(Integer, primary_key=True)
+    first_name = Column(String(120))
+    last_name = Column(String(120))
+    email = Column(String(100))
+    phone = Column("mobile_phone", String(25))
+    student_id = Column(ForeignKey("students.id", ondelete="CASCADE", onupdate="CASCADE"))
+    student = relationship("Student", backref="contacts")
+
+    @hybrid_property
+    def fullname(self):
+        return self.first_name + " " + self.last_name
+
+
 class TeacherStudent(Base):
     __tablename__ = "teachers_to_students"
     id = Column(Integer, primary_key=True)
