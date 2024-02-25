@@ -9,6 +9,14 @@ def update_student(st_id: int, teachers: list):
     return student
 
 
+def remove_student(st_id: int):
+    student = session.query(Student).filter_by(id=st_id).first()
+    session.delete(student)
+    session.commit()
+
+
 if __name__ == '__main__':
     teachers_ = session.query(Teacher).filter(Teacher.id.in_([1, 2, 3])).all()
-    update_student(2, teachers_)
+    # st = update_student(2, teachers_)
+    # print([teacher.fullname for teacher in st.teachers])
+    remove_student(2)
