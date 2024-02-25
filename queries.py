@@ -4,7 +4,7 @@ from sqlalchemy import and_
 from sqlalchemy.orm import joinedload, subqueryload, outerjoin
 
 from conf.db_connection import session
-from conf.models import Teacher, Student, TeacherStudent
+from conf.models import Teacher, Student, Contact, TeacherStudent
 
 
 def get_student_join():
@@ -25,7 +25,7 @@ def get_students():
 
 
 def get_teachers():
-    teachers = session.query(Teacher).outerjoin(Teacher.students).all()
+    teachers = session.query(Teacher).options(outerjoin(Teacher, Student)).all()  # ????????
     # teachers = session.query(Teacher).options(joinedload(Teacher.students, innerjoin=True)).all()
     for t in teachers:
         columns = ["id", "fullname", "students"]
@@ -43,9 +43,29 @@ def get_teachers_by_date():
         print(result)
 
 
+def get_student_with_contacts():
+    students = session.query(Student).options(joinedload(Student.contacts)).all()
+    for s in students:
+        columns = ["id", "fullname", "contacts"]
+        result = [dict(zip(columns, (s.id, s.fullname, [(c.id, c.fullname) for c in s.contacts])))]
+        print(result)
+
+
+def get_info():
+    students = session.query(Student.id, Student.fullname, Teacher.fullname.label("teacher_fullname"),
+                             Contact.fullname.label("contact_fullname")).select_from(Student)\
+        .join(TeacherStudent).join(Teacher).join(Contact).all()
+    for s in students:
+        columns = ["id", "fullname", "teachers", "contacts"]
+        result = [dict(zip(columns, (s.id, s.fullname, s.teacher_fullname, s.contact_fullname)))]
+        print(result)
+
+
 if __name__ == "__main__":
     # get_student_join()
     # get_students()
     # print()
     # get_teachers()
-    get_teachers_by_date()
+    # get_teachers_by_date()
+    # get_student_with_contacts()
+    get_info()
