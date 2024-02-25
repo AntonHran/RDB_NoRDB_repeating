@@ -21,9 +21,7 @@ class Student(Base):
     phone = Column("mobile_phone", String(25))
     address = Column(String(100))
     group_id = Column(Integer, ForeignKey("groups.id", onupdate="CASCADE", ondelete="CASCADE"))
-    grades = relationship("Student",  # class to reference where to go to get
-                          secondary="grades",  # name of table m2m
-                          back_populates="students")
+    group = relationship("Group", backref="students")
 
     @hybrid_property
     def full_name(self):
@@ -35,6 +33,7 @@ class Subject(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String(50))
     teacher_id = Column(Integer, ForeignKey("teachers.id", ondelete="CASCADE", onupdate="CASCADE"))
+    teacher = relationship("Teacher", backref="subjects")
 
 
 class Teacher(Base):
@@ -46,9 +45,6 @@ class Teacher(Base):
     phone = Column("mobile_phone", String(25))
     address = Column(String(100))
     start_work = Column(Date, nullable=False)
-    grades = relationship("Student",  # class to reference where to go to get
-                          secondary="grades",  # name of table m2m
-                          back_populates="teachers")  # name of table to reference for students
 
     @hybrid_property
     def full_name(self):
@@ -62,3 +58,5 @@ class Grade(Base):
     subject_id = Column(Integer, ForeignKey("subjects.id", ondelete="CASCADE", onupdate="CASCADE"))
     grade = Column(Integer, nullable=False)
     date = Column(Date, nullable=False)
+    student = relationship("Student", backref="grade")
+    subject = relationship("Subject", backref="grade")
