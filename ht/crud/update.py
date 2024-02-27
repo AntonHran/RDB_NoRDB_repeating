@@ -1,7 +1,13 @@
+import sys
+import os
+
 from sqlalchemy.exc import SQLAlchemyError
 
-from ht.config.db_connect import session
-from ht.config.models_ import Group, Student, Subject, Teacher, Grade
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(os.path.dirname(SCRIPT_DIR))
+
+from config.db_connect import session
+from config.models_ import Group, Student, Subject, Teacher, Grade
 
 
 def update_table(data):
