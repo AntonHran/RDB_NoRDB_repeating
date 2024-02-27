@@ -9,18 +9,18 @@ Base = declarative_base()
 class Group(Base):
     __tablename__ = "groups"
     id = Column(Integer, primary_key=True)
-    name = Column(String(10))
+    name = Column(String(10), nullable=False)
 
 
 class Student(Base):
     __tablename__ = "students"
     id = Column(Integer, primary_key=True)
-    first_name = Column(String(120))
-    last_name = Column(String(120))
+    first_name = Column(String(120), nullable=False)
+    last_name = Column(String(120), nullable=False)
     email = Column(String(100))
     phone = Column("mobile_phone", String(25))
     address = Column(String(100))
-    group_id = Column(Integer, ForeignKey("groups.id", onupdate="CASCADE", ondelete="CASCADE"))
+    group_id = Column(Integer, ForeignKey("groups.id", onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
     group = relationship("Group", backref="students")
 
     @hybrid_property
@@ -31,7 +31,7 @@ class Student(Base):
 class Subject(Base):
     __tablename__ = "subjects"
     id = Column(Integer, primary_key=True)
-    name = Column(String(50))
+    name = Column(String(50), nullable=False)
     teacher_id = Column(Integer, ForeignKey("teachers.id", ondelete="CASCADE", onupdate="CASCADE"))
     teacher = relationship("Teacher", backref="subjects")
 
@@ -39,8 +39,8 @@ class Subject(Base):
 class Teacher(Base):
     __tablename__ = "teachers"
     id = Column(Integer, primary_key=True)
-    first_name = Column(String(120))
-    last_name = Column(String(120))
+    first_name = Column(String(120), nullable=False)
+    last_name = Column(String(120), nullable=False)
     email = Column(String(100))
     phone = Column("mobile_phone", String(25))
     address = Column(String(100))
@@ -54,8 +54,8 @@ class Teacher(Base):
 class Grade(Base):
     __tablename__ = "grades"
     id = Column(Integer, primary_key=True)
-    student_id = Column(Integer, ForeignKey("students.id", ondelete="CASCADE", onupdate="CASCADE"))
-    subject_id = Column(Integer, ForeignKey("subjects.id", ondelete="CASCADE", onupdate="CASCADE"))
+    student_id = Column(Integer, ForeignKey("students.id", ondelete="CASCADE", onupdate="CASCADE"), nullable=False)
+    subject_id = Column(Integer, ForeignKey("subjects.id", ondelete="CASCADE", onupdate="CASCADE"), nullable=False)
     grade = Column(Integer, nullable=False)
     date = Column(Date, nullable=False)
     student = relationship("Student", backref="grade")
