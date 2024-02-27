@@ -2,8 +2,8 @@ import argparse
 
 from create import *
 from read import read_result
-from update import *
-from remove import *
+from update import update_table
+from remove import remove_row
 
 
 parser = argparse.ArgumentParser(description='CLI DB CRUD app')
@@ -66,7 +66,7 @@ def main():
         case 'read':
             read_result(model, int(id_))
         case 'update':
-            if model == 'Group':
+            """if model == 'Group':
                 updated_row = update_group(id_, group_name)
                 check_updated_row(model, updated_row)
             elif model == 'Student':
@@ -80,9 +80,9 @@ def main():
                 check_updated_row(model, updated_row)
             elif model == 'Mark':
                 updated_row = update_mark(id_, grade, lesson_date, student_id, subject_id)
-                check_updated_row(model, updated_row)
+                check_updated_row(model, updated_row)"""
         case 'delete':
-            result = remove(model, int(id_))
+            result = remove_row(model, int(id_))
             if result > 0:
                 print(f'Removed: {result}')
             else:
