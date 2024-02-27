@@ -14,6 +14,8 @@ def read_table(table: str, id_: int):
             return res
         except SQLAlchemyError as err:
             print(err)
+        finally:
+            session.close()
     else:
         print("Check table name!")
 
