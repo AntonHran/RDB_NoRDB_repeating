@@ -1,7 +1,7 @@
 import argparse
 
 from create import *
-from read import *
+from read import read_result
 from update import *
 from remove import *
 
@@ -64,8 +64,7 @@ def main():
             elif model == 'Grade':
                 create_grade(grade, lesson_date, student_id, subject_id)
         case 'read':
-            res = read_table(model, id_)
-            return_read_res(res, model)
+            read_result(model, int(id_))
         case 'update':
             if model == 'Group':
                 updated_row = update_group(id_, group_name)
@@ -83,7 +82,7 @@ def main():
                 updated_row = update_mark(id_, grade, lesson_date, student_id, subject_id)
                 check_updated_row(model, updated_row)
         case 'delete':
-            result = delete_table_row(id_, model)
+            result = remove(model, int(id_))
             if result > 0:
                 print(f'Removed: {result}')
             else:
