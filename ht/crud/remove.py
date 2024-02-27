@@ -8,7 +8,7 @@ def remove(table: str, id_: int):
     table_model = return_model(table)
     if table_model:
         try:
-            session.delete(table_model).filter_by(id=id_).first()
+            session.query(table_model).filter_by(id=id_).delete()
             session.commit()
             return True
         except SQLAlchemyError as err:
