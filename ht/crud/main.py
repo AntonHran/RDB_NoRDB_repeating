@@ -69,21 +69,6 @@ def main():
             read_result(model, int(id_))
         case 'update':
             update_table(my_arg)
-            """if model == 'Group':
-                updated_row = update_group(id_, group_name)
-                check_updated_row(model, updated_row)
-            elif model == 'Student':
-                updated_row = update_student(id_, first_name, last_name, email, phone, address, group_id)
-                check_updated_row(model, updated_row)
-            elif model == 'Lector':
-                updated_row = update_lector(id_, first_name, last_name, email, phone, address, start_work)
-                check_updated_row(model, updated_row)
-            elif model == 'Subject':
-                updated_row = update_subject(id_, subject_name, lector_id)
-                check_updated_row(model, updated_row)
-            elif model == 'Mark':
-                updated_row = update_mark(id_, grade, lesson_date, student_id, subject_id)
-                check_updated_row(model, updated_row)"""
         case 'delete':
             result = remove_row(model, int(id_))
             if result > 0:
