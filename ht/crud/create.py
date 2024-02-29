@@ -9,6 +9,7 @@ sys.path.append(os.path.dirname(SCRIPT_DIR))
 
 from config.db_connect import session
 from config.models_ import Group, Student, Subject, Teacher, Grade
+from read import return_model
 
 
 def create_group(gr_name: str):
@@ -103,5 +104,20 @@ def check_stud_id(st_id: int) -> bool:
 
 
 def check_subject_id(sub_id: int) -> bool:
-    student = session.query(Subject).filter_by(id=sub_id).first()
-    return True if student else False
+    subject = session.query(Subject).filter_by(id=sub_id).first()
+    return True if subject else False
+
+
+def create_record(table_name, data: dict):
+    table = return_model(table_name)
+    try:
+        new_record = table()
+        for key in data.keys():
+            setattr(new_record, key, data.get(key))
+        session.add(new_record)
+        session.commit()
+    except SQLAlchemyError as err:
+        session.rollback()
+        print(err)
+    finally:
+        session.close()
