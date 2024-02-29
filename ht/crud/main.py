@@ -17,13 +17,13 @@ parser.add_argument('--lastname', help='last name')
 parser.add_argument('--email')
 parser.add_argument('--phone')
 parser.add_argument('--address')
-parser.add_argument('--stw', help='Date of work staring')
+parser.add_argument('--start_w', help='Date of work starting')
 parser.add_argument('--subject')
 parser.add_argument('--grade')
 parser.add_argument('--stud_id')
 parser.add_argument('--group_id')
 parser.add_argument('--lector_id')
-parser.add_argument('--sub_id')
+parser.add_argument('--subj_id')
 parser.add_argument('--lesson_date')
 
 arguments = parser.parse_args()
@@ -46,7 +46,7 @@ grade = my_arg.get('grade')
 group_id = my_arg.get('group_id')
 student_id = my_arg.get('stud_id')
 lector_id = my_arg.get('lector_id')
-subject_id = my_arg.get('sub_id')
+subject_id = my_arg.get('subj_id')
 lesson_date = my_arg.get('lesson_date')
 
 args = (model, id_, group_name, first_name, last_name, full_name, email, phone, )
@@ -56,7 +56,7 @@ def main():
     match action:
         case 'create':
             if model == 'Group':
-                create_group(group_name)
+                create_record("Group", {"name": group_name})
             elif model == 'Student':
                 create_student(first_name, last_name, int(group_id))
             elif model == 'Lector':
