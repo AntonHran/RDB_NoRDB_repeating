@@ -12,23 +12,29 @@ from config.models_ import Group, Student, Subject, Teacher, Grade, Base
 from read import return_model
 
 
-def update_table(data: dict):
-    data = get_data(data)
-    search_field(data)
+def update_row(record, table: Base, field: str, new_rec: str):
+    try:
+        record.update({getattr(table, field): new_rec})
+        session.commit()
+    except SQLAlchemyError as err:
+        session.rollback()
+        print(err)
 
 
 def get_data(arguments: dict):
     return {key: value for key, value in arguments.items() if value}
 
 
-def search_field(data: dict):
+def update_table(data: dict):
+    data = get_data(data)
     table_model = return_model(data.get("model"))
     record = session.query(table_model).filter_by(id=data.get("id"))
     for el in data.keys():
         field = search_atr(table_model, el)
         if field:
-            record.update({getattr(record, field): data.get(el)})
-    session.commit()
+            update_row(record, table_model, field, data.get(el))
+            # record.update({getattr(table_model, field): data.get(el)})
+    # session.commit()
     session.close()
 
 
