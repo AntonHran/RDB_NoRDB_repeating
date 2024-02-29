@@ -49,6 +49,8 @@ lector_id = my_arg.get('lector_id')
 subject_id = my_arg.get('sub_id')
 lesson_date = my_arg.get('lesson_date')
 
+args = (model, id_, group_name, first_name, last_name, full_name, email, phone, )
+
 
 def main():
     match action:
@@ -66,6 +68,7 @@ def main():
         case 'read':
             read_result(model, int(id_))
         case 'update':
+            update_table(my_arg)
             """if model == 'Group':
                 updated_row = update_group(id_, group_name)
                 check_updated_row(model, updated_row)
