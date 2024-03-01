@@ -112,6 +112,7 @@ def fill_data(data: dict, table: Base, new_rec: Base) -> Base:
     for key in data.keys():
         field_to_fill = search_atr(table, key)
         if field_to_fill:
+            print(field_to_fill)
             try:
                 val = analyze_attrs(table, key, data.get(key))
                 setattr(new_rec, field_to_fill, val)
@@ -122,9 +123,10 @@ def fill_data(data: dict, table: Base, new_rec: Base) -> Base:
 
 def analyze_attrs(table: Base, key: str, val: str | int):
     if key.endswith("_id"):
+        print(key)
         if search(table, val):
             return val
-    if key.endswith("_date"):
+    if key.endswith("_date") or key == "date":
         return parse_data(val)
     return val
 
@@ -138,7 +140,7 @@ def parse_data(str_date: str) -> datetime.date:
     date_ = ""  # = datetime.date.today()
     try:
         year, month, day = str_date.split("-")
-        date_ = datetime.date(year=year, month=month, day=day)
+        date_ = datetime.date(year=int(year), month=int(month), day=int(day))
         return date_
     except TypeError as err:
         print(err)
