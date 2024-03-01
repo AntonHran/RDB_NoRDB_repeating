@@ -25,10 +25,12 @@ def get_data(arguments: dict) -> dict:
     return {key: value for key, value in arguments.items() if value}
 
 
-def update_table(data: dict):
-    data = get_data(data)
-    table_model = return_model(data.get("model"))
-    record = session.query(table_model).filter_by(id=data.get("id"))
+def get_record(table: Base, id_: int):
+    record = session.query(table).filter_by(id=id_)
+    return record
+
+
+def update_table(data: dict, record: Base, table_model: Base):
     for el in data.keys():
         field = search_atr(table_model, el)
         if field and field != "id":
@@ -42,3 +44,10 @@ def search_atr(table: Base, key: str) -> str:
     for atr in vars(table).keys():
         if re.match(atr, key):
             return atr
+
+
+def update_main(data: dict):
+    data = get_data(data)
+    table_model = return_model(data.get("model"))
+    record = get_record(table_model, data.get("id"))
+    update_table(data, record, table_model)
