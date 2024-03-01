@@ -2,7 +2,7 @@ import argparse
 
 from create import create_main
 from read import read_result
-from update import update_table
+from update import update_main
 from remove import remove_row
 
 
@@ -59,7 +59,7 @@ def main():
         case 'read':
             read_result(model, int(id_))
         case 'update':
-            update_table(my_arg)
+            update_main(my_arg)
         case 'delete':
             result = remove_row(model, int(id_))
             if result > 0:
