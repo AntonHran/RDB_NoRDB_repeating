@@ -21,7 +21,7 @@ def update_row(record, table: Base, field: str, new_rec: str):
         print(err)
 
 
-def get_data(arguments: dict):
+def get_data(arguments: dict) -> dict:
     return {key: value for key, value in arguments.items() if value}
 
 
@@ -31,7 +31,7 @@ def update_table(data: dict):
     record = session.query(table_model).filter_by(id=data.get("id"))
     for el in data.keys():
         field = search_atr(table_model, el)
-        if field:
+        if field and field != "id":
             update_row(record, table_model, field, data.get(el))
             # record.update({getattr(table_model, field): data.get(el)})
     # session.commit()
