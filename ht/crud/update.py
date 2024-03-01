@@ -42,7 +42,7 @@ def update_table(data: dict, record: Base, table_model: Base):
 
 def search_atr(table: Base, key: str) -> str:
     for atr in vars(table).keys():
-        if re.match(atr, key):
+        if atr.startswith(key[:4]):  # re.match(atr, key):
             return atr
 
 
