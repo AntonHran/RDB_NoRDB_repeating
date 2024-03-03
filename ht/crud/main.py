@@ -49,8 +49,6 @@ lector_id = my_arg.get('lector_id')
 subject_id = my_arg.get('subj_id')
 lesson_date = my_arg.get('lesson_date')"""
 
-# args = (model, id_, group_name, first_name, last_name, full_name, email, phone, )
-
 
 def main():
     match action:
