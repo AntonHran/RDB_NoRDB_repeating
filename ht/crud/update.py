@@ -1,6 +1,6 @@
 import sys
 import os
-import re
+# import re
 
 from sqlalchemy.exc import SQLAlchemyError
 
@@ -15,7 +15,7 @@ from read import return_model
 def update_row(record, table: Base, field: str, new_rec: str):
     try:
         record.update({getattr(table, field): new_rec})
-        session.commit()
+        # session.commit()
     except SQLAlchemyError as err:
         session.rollback()
         print(err)
@@ -36,13 +36,13 @@ def update_table(data: dict, record: Base, table_model: Base):
         if field and field != "id":
             update_row(record, table_model, field, data.get(el))
             # record.update({getattr(table_model, field): data.get(el)})
-    # session.commit()
+    session.commit()
     session.close()
 
 
 def search_atr(table: Base, key: str) -> str:
     for atr in vars(table).keys():
-        if atr.startswith(key[:4]):  # re.match(atr, key):
+        if atr.startswith(key[:4]) or atr == key:  # re.match(atr, key):
             return atr
 
 
